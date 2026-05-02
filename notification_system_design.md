@@ -688,6 +688,8 @@ Convert the Stage 1 API contracts and Stage 2 DB schema into an implementation-r
 
 # 2. Backend Project Structure
 
+```
+
 notification_app_be/
 │── package.json
 │── app.js
@@ -733,7 +735,7 @@ notification_app_be/
     ├── pushWorker.js
     ├── emailWorker.js
     └── cleanupWorker.js
-
+```
 ---
 
 # 3. Application Entry Point
