@@ -918,6 +918,8 @@ Design a responsive frontend system for students and admins to:
 
 # 3. Frontend Folder Structure
 
+```
+
 notification_app_fe/
 │── public/
 │── src/
@@ -953,6 +955,8 @@ notification_app_fe/
 │   └── utils/
 │       ├── tokenManager
 │       └── formatters
+
+```
 
 ---
 
@@ -1164,3 +1168,176 @@ Track:
 - Calendar sync
 - Placement tracker
 - Resume reminders
+
+# Stage 5: Testing, Deployment, Monitoring & Production Readiness
+
+## Objective
+Ensure the campus notification system is production-ready through:
+- Comprehensive testing
+- Deployment architecture
+- CI/CD automation
+- Monitoring
+- Logging
+- Security hardening
+- Backup and disaster recovery
+
+---
+
+# 1. Testing Strategy
+
+## Unit Testing
+Test individual modules:
+- authService
+- notificationService
+- preferenceService
+- deliveryService
+- queue workers
+- logger middleware
+
+### Focus:
+- JWT validation
+- DB operations
+- Read/unread logic
+- Preferences toggles
+- Notification fanout
+
+---
+
+## Integration Testing
+Test service interactions:
+- API ↔ DB
+- API ↔ Redis
+- API ↔ Queue
+- WebSocket ↔ Redis
+- Push/email workers
+
+---
+
+## End-to-End Testing (E2E)
+Simulate real workflows:
+- Student login
+- Fetch notifications
+- Admin publishes notification
+- Real-time delivery
+- Mark read
+- Preferences update
+- Push fallback
+
+---
+
+# 2. Testing Tools
+
+## Recommended:
+- Jest
+- Supertest
+- Postman
+- Newman
+- Cypress / Playwright
+
+---
+
+# 3. Deployment Architecture
+
+Client Apps  
+↓  
+CDN / Web Hosting  
+↓  
+Load Balancer (Nginx)  
+↓  
+API Servers (Node.js)  
+↓  
+Redis Cluster  
+↓  
+PostgreSQL Primary + Replicas  
+↓  
+Kafka / RabbitMQ  
+↓  
+Workers  
+↓  
+Push / Email Providers
+
+---
+
+# 4. Infrastructure Components
+
+## Backend:
+- Docker containers
+- Kubernetes / ECS
+- Nginx reverse proxy
+
+## Database:
+- PostgreSQL
+- Read replicas
+- Backups
+
+## Cache:
+- Redis cluster
+
+## Queue:
+- Kafka / RabbitMQ
+
+---
+
+# 5. CI/CD Pipeline
+
+## Workflow:
+Git Push  
+→ Lint  
+→ Unit Tests  
+→ Integration Tests  
+→ Build  
+→ Dockerize  
+→ Deploy to Staging  
+→ Smoke Test  
+→ Production Deploy
+
+---
+
+## Tools:
+- GitHub Actions
+- Jenkins
+- Docker
+- Kubernetes
+
+---
+
+# 6. Monitoring
+
+## Metrics:
+- API response time
+- DB latency
+- Queue lag
+- WebSocket active users
+- Push success rate
+- Email success rate
+- Delivery latency
+- Error rate
+
+---
+
+## Monitoring Tools:
+- Prometheus
+- Grafana
+- ELK Stack
+- Sentry
+
+---
+
+# 7. Logging Strategy
+
+## Track:
+- Login attempts
+- Token failures
+- Admin actions
+- Notification publishing
+- Delivery failures
+- Retry attempts
+- Queue dead-letter events
+- Security incidents
+
+---
+
+## Use:
+Previously built logging middleware:
+```txt
+Log("backend", "error", "service", "Push delivery failed");
