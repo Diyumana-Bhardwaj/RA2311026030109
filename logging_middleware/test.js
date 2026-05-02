@@ -2,7 +2,7 @@ const Log = require("./logger");
 
 (async () => {
     await Log(
-        "backend",
+        "frontend",
         "error",
         "handler",
         "received string, expected bool"
