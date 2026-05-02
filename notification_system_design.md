@@ -535,7 +535,9 @@ Tracks per-student delivery + read status
 
 # Why separate table?
 Because one notification may go to:
+```txt id="v3p7la"
 1 notification → thousands of students
+```
 
 This avoids duplication in notifications master table. 
 
@@ -641,6 +643,8 @@ CREATE TABLE students (
     year INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+```
 
 # Stage 3: Backend Implementation, Service Architecture & Execution Workflow
 
@@ -868,6 +872,7 @@ NEW_NOTIFICATION
 Use previously built logging middleware:
 ```txt id="v3p7la"
 Log("backend", "info", "controller", "Notification fetched")
+```
 
 # Stage 4: Frontend Architecture, User Experience Design & Client-Side Notification Handling
 
