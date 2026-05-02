@@ -535,8 +535,112 @@ Tracks per-student delivery + read status
 
 # Why separate table?
 Because one notification may go to:
-```txt id="v3p7la"
 1 notification → thousands of students
+
+This avoids duplication in notifications master table. 
+
+# 7. notification_preferences Table
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| id | UUID | PK |
+| student_id | UUID | UNIQUE FK |
+| placement_enabled | BOOLEAN | |
+| event_enabled | BOOLEAN | |
+| result_enabled | BOOLEAN | |
+| push_enabled | BOOLEAN | |
+| email_enabled | BOOLEAN | |
+| sms_enabled | BOOLEAN | |
+| updated_at | TIMESTAMP | |
+
+---
+
+# 8. delivery_logs Table
+
+Tracks channel delivery
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| id | UUID | PK |
+| student_notification_id | UUID | FK |
+| channel | ENUM('in_app','push','email','sms') | |
+| status | ENUM('success','failed','pending') | |
+| error_message | TEXT NULL | |
+| delivered_at | TIMESTAMP | |
+
+---
+
+# 9. auth_sessions Table
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| id | UUID | PK |
+| user_id | UUID | |
+| user_type | ENUM('student','admin') | |
+| refresh_token | TEXT | |
+| ip_address | VARCHAR(64) | |
+| device_info | TEXT | |
+| expires_at | TIMESTAMP | |
+| created_at | TIMESTAMP | |
+
+---
+
+# 10. Relationships
+
+## students
+1 → many student_notifications
+
+## notifications
+1 → many student_notifications
+
+## admins
+1 → many notifications
+
+## student_notifications
+1 → many delivery_logs
+
+---
+
+# 11. ER Flow
+
+Admin → notifications → student_notifications → delivery_logs  
+Student → preferences → notification filtering
+
+---
+
+# 12. Indexing Strategy
+
+## High Priority Indexes:
+
+### students:
+- email
+
+### notifications:
+- type
+- priority
+- created_at
+
+### student_notifications:
+- student_id
+- notification_id
+- is_read
+- created_at
+
+---
+
+# 13. Sample SQL Schema
+
+## students
+```sql
+CREATE TABLE students (
+    id UUID PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    department VARCHAR(50),
+    year INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 # Stage 3: Backend Implementation, Service Architecture & Execution Workflow
 
